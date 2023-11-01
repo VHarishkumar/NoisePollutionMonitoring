@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href ="style.css">
+        <style>
+             td{
+                padding-left: 15px;
+            }
+            p{
+                font-size: large;
+                color: yellow;
+               
+            }
+            button{
+                height: 40px;
+                width: 80px;
+                font-size: 17px; 
+             }
+             .button{
+                padding-top: 30px;
+             }
+        </style>
+         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+         <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>   
+         <script>
+         const firebaseConfig = {
+  apiKey: "AIzaSyA0wdR7raNSahjrpzyEUHpOJdoOyGXkl1o",
+  authDomain: "iot-npm.firebaseapp.com",
+  databaseURL: "https://iot-npm-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "iot-npm",
+  storageBucket: "iot-npm.appspot.com",
+  messagingSenderId: "187353253620",
+  appId: "1:187353253620:web:013bd9b0b96df64f7680a1",
+  measurementId: "G-5QYTCECL7R"
+};
+         firebase.initializeApp(firebaseConfig);
+         var database = firebase.database();
+     </script>
+     <script src="app.js" defer></script>
+
+    </head>
+     <body><center>
+        <table>
+            <tr><td><h1>Noise Level Monitoring</h1></td>
+                <td><button class="back" onclick="window.location.href = 'index.html';">Back</button></td>
+            </tr>
+        </table><hr> </center>
+
+        <p>
+            If the threshold reaches maximum of 60 Please aware of the surroundings it can harm your ears
+         </p><hr>
+        
+         <p>Distance: <span id="reading-int"></span></p>
+         <p>Noise Level db: <span id="reading-float"></span></p><hr>
+         <center> <table class="button">
+            <tr>
+                <td> <button onclick="window.location.href = 'nlm.html';">Start</button></td>
+            <td><button onclick="window.location.href = 'nlm.html';">Stop</button></td>
+            </tr>
+        </table></center>
+        
+
+     </body>
+</html>
+
