@@ -1,0 +1,79 @@
+import machine
+import time
+import urequests
+import ujson
+import network
+import math
+
+# Define your Wi-Fi credentials
+wifi_ssid = 'Wokwi-GUEST'
+wifi_password = ''  # Replace with the actual Wi-Fi password
+
+# Connect to Wi-Fi
+wifi = network.WLAN(network.STA_IF)
+wifi.active(True)
+wifi.connect(wifi_ssid, wifi_password)
+
+# Wait for Wi-Fi connection
+while not wifi.isconnected():
+    pass
+
+# Define ultrasonic sensor pins (Trig and Echo pins)
+ultrasonic_trig = machine.Pin(15, machine.Pin.OUT)
+ultrasonic_echo = machine.Pin(4, machine.Pin.IN)
+
+# Calibration constant for the microphone (adjust as needed)
+calibration_constant = 2.0
+noise_threshold = 60  # Set your desired noise threshold in dB
+
+# Firebase Realtime Database URL and secret
+firebase_url = 'https://iot-npm-default-rtdb.europe-west1.firebasedatabase.app/'  # Replace with your Firebase URL
+firebase_secret = '8AssLZrbaM3USfwS854A2MoZv643EBNqTgBWiQ5W'  # Replace with your Firebase secret
+
+def measure_distance():
+    # Trigger the ultrasonic sensor
+    ultrasonic_trig.value(1)
+    time.sleep_us(10)
+    ultrasonic_trig.value(0)
+
+    # Measure the pulse width of the echo signal
+    pulse_time = machine.time_pulse_us(ultrasonic_echo, 1, 30000)
+
+    # Calculate distance in centimeters
+    distance_cm = (pulse_time / 2) / 29.1
+    return distance_cm
+
+# Function to send data to Firebase
+def send_data_to_firebase(distance, noise_level_db):
+    data = {
+        "Distance": distance,
+        "NoiseLevelDB": noise_level_db
+    }
+    url = f'{firebase_url}/sensor_data.json?auth={firebase_secret}'
+    
+    try:
+        response = urequests.patch(url, json=data)  # Use 'patch' instead of 'put'
+        if response.status_code == 200:
+            print("Data sent to Firebase")
+        else:
+            print(f"Failed to send data to Firebase. Status code: {response.status_code}")
+    except Exception as e:
+        print(f"Error sending data to Firebase: {	str(e)}")
+
+try:
+    while True:
+        distance = measure_distance()
+        noise_level_db = 0  # Replace with the actual noise level measurement
+
+        print("Distance: {} cm, Noise Level: {:.2f} dB".format(distance, noise_level_db))
+
+        if noise_level_db > noise_threshold:
+            print("Warning: Noise pollution exceeds threshold!")
+
+        # Send data to Firebase
+        send_data_to_firebase(distance, noise_level_db)
+
+        time.sleep(1)  # Adjust the sleep duration as needed
+
+except KeyboardInterrupt:
+    print("Monitoring stopped")

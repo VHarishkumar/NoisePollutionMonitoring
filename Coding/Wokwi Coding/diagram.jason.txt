@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "author": "Harish Kumar B tech IT",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-esp32-devkit-v1",
+      "id": "esp",
+      "top": -72.1,
+      "left": 52.6,
+      "attrs": { "env": "micropython-20231005-v1.21.0" }
+    },
+    { "type": "wokwi-microphone", "id": "mic", "top": -16.98, "left": 263.79, "attrs": {} },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "ultrasonic1",
+      "top": -190.5,
+      "left": 274.3,
+      "attrs": { "distance": "88" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX0", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX0", "$serialMonitor:TX", "", [] ],
+    [ "mic:1", "esp:D2", "purple", [ "v0" ] ],
+    [ "mic:2", "esp:GND.1", "black", [ "v0" ] ],
+    [ "ultrasonic1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "ultrasonic1:TRIG", "esp:D15", "yellow", [ "v0" ] ],
+    [ "ultrasonic1:ECHO", "esp:D4", "green", [ "v0" ] ],
+    [ "ultrasonic1:GND", "esp:GND.1", "black", [ "v0" ] ]
+  ],
+  "serialMonitor": { "display": "plotter" },
+  "dependencies": {}
+}
