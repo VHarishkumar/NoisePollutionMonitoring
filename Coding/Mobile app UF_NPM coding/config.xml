@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<widget
+   android-versionCode ='1' 
+   id ='com.VHK.UF_NPM' 
+   version='1.0.0' 
+   xmlns = 'https://www.w3.org/ns/widgets'>
+
+   <name>UF_NPM</name>
+   <description>Noise Pollution Monitoring</description>
+   <author>VHK</author>
+
+   <preference name='orientation' value='portrait'></preference>
+   
+</widget>
